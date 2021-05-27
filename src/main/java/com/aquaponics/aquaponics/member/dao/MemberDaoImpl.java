@@ -7,6 +7,7 @@ public class MemberDaoImpl extends SqlSessionDaoSupport implements MemberDao{
 
     @Override
     public void register(MemberBean mb) throws Exception{
+        System.out.println("test!!!");
         // sql.insert("MemberMapper.register", mb);
     }
 }
