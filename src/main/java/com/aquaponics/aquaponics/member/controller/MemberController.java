@@ -1,13 +1,18 @@
-package com.aquaponics.aquaponics.controller;
-import com.aquaponics.aquaponics.dto.*;
+package com.aquaponics.aquaponics.member.controller;
+
+import javax.annotation.Resource;
+
+import com.aquaponics.aquaponics.member.dto.*;
+import com.aquaponics.aquaponics.member.service.MemberService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-
-public class MainController {
+public class MemberController {
+	@Resource(name="memberService")
+	private MemberService memberService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
@@ -29,12 +34,14 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
-	public String insertPost(MemberBean mb) {
+	public String insertPost(MemberBean mb) throws Exception {
  
 		System.out.println(mb.getId());
 		System.out.println(mb.getPass());
 		System.out.println(mb.getName());
 		System.out.println(mb.getGender());
+
+		memberService.register(mb);
 		return "redirect:login";
 	}
 

@@ -1,4 +1,4 @@
-package com.aquaponics.aquaponics.dto;
+package com.aquaponics.aquaponics.member.dto;
 
 public class MemberBean {
     private String id;
