@@ -1,18 +1,18 @@
 package com.aquaponics.aquaponics.member.controller;
 
-import javax.annotation.Resource;
-
 import com.aquaponics.aquaponics.member.dto.*;
-import com.aquaponics.aquaponics.member.service.MemberService;
+import com.aquaponics.aquaponics.member.service.IMemberService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MemberController {
-	@Resource(name="memberService")
-	private MemberService memberService;
+	
+	@Autowired
+	private IMemberService memberService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
