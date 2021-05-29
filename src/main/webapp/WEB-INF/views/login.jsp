@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<html lang="en">
+  <html lang="en">
 
-<head>
+  <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="../../css/style.css">
     <title>로그인 </title>
-</head>
+  </head>
 
-<body width="100%" height="100%">
+  <body width="100%" height="100%">
     <form action="./login" method="post" class="loginForm">
       <h2>로그인</h2>
       <div class="idForm">
@@ -22,8 +21,8 @@
         LOG IN
       </button>
       <script>
-      	let button = () => {
-        	alert('login Button !')
+        let button = () => {
+          alert('login Button !')
         }
       </script>
       <div class="bottomText">
@@ -32,4 +31,4 @@
     </form>
   </body>
 
-</html>
+  </html>

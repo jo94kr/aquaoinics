@@ -1,7 +1,7 @@
 package com.aquaponics.aquaponics.member.controller;
 
 import com.aquaponics.aquaponics.member.dto.*;
-import com.aquaponics.aquaponics.member.service.IMemberService;
+import com.aquaponics.aquaponics.member.service.MemberService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MemberController {
 	
 	@Autowired
-	private IMemberService memberService;
+	MemberService memberService;
+	// private IMemberService memberService;
+
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
@@ -41,7 +43,8 @@ public class MemberController {
 		System.out.println(mb.getName());
 		System.out.println(mb.getGender());
 
-		memberService.register(mb);
+		memberService.insertMember(mb);
+		// memberService.test();
 		return "redirect:login";
 	}
 
