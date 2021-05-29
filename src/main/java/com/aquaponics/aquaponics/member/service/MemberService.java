@@ -1,5 +1,7 @@
 package com.aquaponics.aquaponics.member.service;
 
+import java.lang.reflect.Member;
+
 import com.aquaponics.aquaponics.member.dto.MemberBean;
 import com.aquaponics.aquaponics.member.mappers.MemberMapper;
 
@@ -19,5 +21,7 @@ public class MemberService {
     public void test() throws Exception{
         System.out.println(memberMapper.test());
     }
-
+    public MemberBean login(MemberBean mb) throws Exception{
+        return memberMapper.login(mb);
+    }
 }

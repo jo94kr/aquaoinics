@@ -13,8 +13,8 @@
             아이디 : <input type="text" name="id"><br>
             비밀번호 : <input type="password" name="pass"><br>
             이름 : <input type="text" name="name"><br>
-            성별 : <input type="checkbox" name="남자" value="남자">남자
-            <input type="checkbox" name="여자" value="여자">여자<br>
+            성별 : <input type="checkbox" name="gender" value="남자">남자
+            <input type="checkbox" name="gender" value="여자">여자<br>
             <input type="submit" value="회원가입">
         </form>
     </body>
