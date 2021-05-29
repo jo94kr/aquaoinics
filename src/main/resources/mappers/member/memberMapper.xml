@@ -14,5 +14,12 @@
         
         <select id="test" resultType="String">
                 SELECT NOW()
-        </select>       
+        </select>
+
+        <select id ="login" resultType="Memberbean">
+                select id, pass
+                from member
+                where id = #{id}
+                and pass = #{pass} 
+        </select>              
 </mapper>

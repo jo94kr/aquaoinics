@@ -17,14 +17,9 @@
       <div class="passForm">
         <input type="password" class="pw" name="pass" placeholder="PW">
       </div>
-      <button type="button" class="btn" onclick="button()">
+      <button type="button" class="btn" onclick="location.href='main' ">
         LOG IN
       </button>
-      <script>
-        let button = () => {
-          alert('login Button !')
-        }
-      </script>
       <div class="bottomText">
         아이디가 없으세요? <a href="./insert">회원가입</a>
       </div>
