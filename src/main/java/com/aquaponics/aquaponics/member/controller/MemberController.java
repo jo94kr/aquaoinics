@@ -13,8 +13,6 @@ public class MemberController {
 	
 	@Autowired
 	MemberService memberService;
-	// private IMemberService memberService;
-
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
