@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aquaponics.aquaponics.main.mappers.MainMapper">
+        <select id="getContent" resultType="hashMap">
+                SELECT 
+                        NUM,
+                        ID,
+                        DATE_FORMAT(DATE, '%Y-%m-%d %T') AS DATE,
+                        FARMTYPE,
+                        PLANTTYPE,
+                        PLANTTOLIGHT,
+                        PLANTLENGTH,
+                        LEAFLENGTH,
+                        TEMPERATURE,
+                        HUMIDITY,
+                        IMAGELOC
+                FROM CONTENT
+        </select>
+</mapper>

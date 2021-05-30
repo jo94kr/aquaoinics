@@ -28,10 +28,6 @@
     <link rel="stylesheet" href="css/app-light.css" id="lightTheme">
     <link rel="stylesheet" href="css/app-dark.css" id="darkTheme" disabled>
   </head>
-  
-  <script>
-    alert('test');
-  </script>
 
   <aside class="sidebar-left border-right bg-white shadow" id="leftSidebar" data-simplebar>
     <a href="#" class="btn collapseSidebar toggle-btn d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
@@ -53,13 +49,29 @@
       </div>
       <ul class="navbar-nav flex-fill w-100 mb-2">
         <li class="nav-item dropdown">
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item w-100">
+              <a class="nav-link" href="./index">
+                <i class="fe fe-home fe-16"></i>
+                <span class="ml-3 item-text">메인페이지</span>
+              </a>
+            </li>
+          </ul>
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item w-100">
+              <a class="nav-link" href="./addContent">
+                <i class="fe fe-pen-tool fe-16"></i>
+                <span class="ml-3 item-text">글쓰기</span>
+              </a>
+            </li>
+          </ul>
           <a href="#dashboard" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
-            <i class="fe fe-home fe-16"></i>
+            <i class="fe fe-pen-tool fe-16"></i>
             <span class="ml-3 item-text">Dashboard</span><span class="sr-only">(current)</span>
           </a>
           <ul class="collapse list-unstyled pl-4 w-100" id="dashboard">
             <li class="nav-item active">
-              <a class="nav-link pl-3" href="./index.jsp"><span class="ml-1 item-text">Default</span></a>
+              <a class="nav-link pl-3" href="./index"><span class="ml-1 item-text">Default</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link pl-3" href="./dashboard-analytics.jsp"><span class="ml-1 item-text">Analytics</span></a>

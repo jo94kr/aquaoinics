@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <!DOCTYPE html>
+    <%
+        request.setCharacterEncoding("UTF-8");
+        session = request.getSession(true); 
+        String id = request.getParameter("id"); 
+        request.getSession().setAttribute("id", id); 
+    %>
+
+
+
     <html>
 
     <head>

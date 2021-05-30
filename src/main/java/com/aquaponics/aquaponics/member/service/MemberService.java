@@ -1,7 +1,5 @@
 package com.aquaponics.aquaponics.member.service;
 
-import java.lang.reflect.Member;
-
 import com.aquaponics.aquaponics.member.dto.MemberBean;
 import com.aquaponics.aquaponics.member.mappers.MemberMapper;
 
