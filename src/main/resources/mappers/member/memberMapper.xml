@@ -2,7 +2,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aquaponics.aquaponics.member.mappers.MemberMapper">
         <insert id="memberInsert" parameterType="MemberBean">
-            insert into member( id
+            insert into memberInsert( id
                                 ,pass
                                 ,name
                                 ,gender)
@@ -16,10 +16,17 @@
                 SELECT NOW()
         </select>
 
-        <select id ="login" resultType="Memberbean">
-                select id, pass
-                from member
-                where id = #{id}
-                and pass = #{pass} 
-        </select>              
+        <select id ="loginMember" parameterType="MemberBean" resultType="MemberBean">
+                SELECT 
+		id
+                ,pass
+                ,name
+                ,gender
+	 FROM
+	 	member
+	 WHERE
+	 	id=#{id} AND
+	 	pass=#{pass}
+
+	</select>             
 </mapper>

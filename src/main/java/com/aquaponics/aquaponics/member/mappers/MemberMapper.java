@@ -12,5 +12,5 @@ public interface MemberMapper {
 
     public String test() throws Exception;
 
-    public MemberBean login(MemberBean mb) throws Exception;
+    public MemberBean loginMember(MemberBean mb)throws Exception;;
 }

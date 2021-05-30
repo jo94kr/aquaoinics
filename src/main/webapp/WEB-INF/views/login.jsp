@@ -1,29 +1,28 @@
-<!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-  <html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../../css/style.css">
-    <title>로그인 </title>
-  </head>
-
-  <body width="100%" height="100%">
-    <form action="./login" method="post" class="loginForm">
-      <h2>로그인</h2>
-      <div class="idForm">
-        <input type="text" class="id" name="id" placeholder="ID">
-      </div>
-      <div class="passForm">
-        <input type="password" class="pw" name="pass" placeholder="PW">
-      </div>
-      <button type="button" class="btn" onclick="location.href='main' ">
-        LOG IN
-      </button>
-      <div class="bottomText">
-        아이디가 없으세요? <a href="./insert">회원가입</a>
-      </div>
-    </form>
-  </body>
-
-  </html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<html>
+<head>
+</head>
+<body>
+<c:if test="${member == null}">
+  <form action='<c:url value='/login'/>' method="post">
+            <div>
+                <label>아이디</label>
+                <input id="id" name="id">    
+            </div>
+            <div>
+                <label>비밀번호</label>
+                <input id="pass" name="pass">
+            </div>
+            <input type="submit" value="로그인">    
+            <input type="button" value="회원가입" onclick="location.href='insert'">
+        </form>
+</c:if>
+ 
+<c:if test="${member != null}">
+<c:redirect url="/main"/>
+</c:if>
+ 
+</body>
+</html>
