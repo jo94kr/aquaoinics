@@ -1,5 +1,6 @@
 package com.aquaponics.aquaponics.main.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +15,33 @@ public class MainService {
     @Autowired
     public MainMapper mainMapper;
 
-    public List<Map<String, Object>> getContent(Map<String, Object> paramMap) throws Exception {
+    public List<Map<String, Object>> getContentList(Map<String, Object> paramMap) throws Exception {
         List<Map<String, Object>> resultList = null;
-        resultList = mainMapper.getContent(paramMap);
+        resultList = mainMapper.getContentList(paramMap);
 
         return resultList;
     }
 
+    public Map<String, Object> getContent(Map<String, Object> paramMap) throws Exception {
+        Map<String, Object> resultMap = null;
+        resultMap = mainMapper.getContent(paramMap);
+        
+        return resultMap;
+    }
+
+    public void insertContent(Map<String, Object> paramMap) throws Exception {
+        mainMapper.insertContent(paramMap);
+    }
+    
+    public Map<String, Object> getSelectType() throws Exception {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("farmType", mainMapper.getFarmType());
+        resultMap.put("plantType", mainMapper.getPlantType());
+
+        return resultMap;
+    }
+
+    public void deleteContent(Map<String, Object> paramMap) throws Exception {
+        mainMapper.deleteContent(paramMap);
+    }
 }

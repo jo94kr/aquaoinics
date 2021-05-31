@@ -31,7 +31,10 @@ public class MemberController {
         HttpSession session = req.getSession();
         MemberBean member = memberService.memberLogin(mb);
         
-        if(member == null) {
+		System.out.println(member.getId());
+		System.out.println(member.getPass());
+
+        if(member.getId() == null) {
             session.setAttribute("member", null);
             rttr.addFlashAttribute("msg", false);
         } else {

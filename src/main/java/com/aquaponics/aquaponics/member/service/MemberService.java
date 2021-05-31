@@ -1,7 +1,5 @@
 package com.aquaponics.aquaponics.member.service;
 
-import javax.servlet.http.HttpSession;
-
 import com.aquaponics.aquaponics.member.dto.MemberBean;
 import com.aquaponics.aquaponics.member.mappers.MemberMapper;
 

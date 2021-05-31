@@ -17,7 +17,7 @@
         </select>
 
         <select id ="loginMember" parameterType="MemberBean" resultType="MemberBean">
-                SELECT 
+        SELECT 
 		id
                 ,pass
                 ,name
@@ -25,8 +25,8 @@
 	 FROM
 	 	member
 	 WHERE
-	 	id=#{id} AND
-	 	pass=#{pass}
+	 	id = #{id}
+                AND pass = #{pass}
 
 	</select>             
 </mapper>

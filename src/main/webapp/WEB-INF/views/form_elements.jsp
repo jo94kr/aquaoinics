@@ -23,18 +23,38 @@
   </head>
 
   <script>
-    alert('test');
   </script>
 
   <body class="vertical  light  ">
     <div class="wrapper">
-      <jsp:include page="top-bar.jsp"></jsp:include>
       <main role="main" class="main-content">
         <div class="container-fluid">
           <div class="row justify-content-center">
             <div class="col-12">
               <h2 class="page-title">Form elements</h2>
               <p class="text-muted">Demo for form control styles, layout options, and custom components for creating a wide variety of forms.</p>
+              <form method="post" action="/insertContent" enctype="multipart/form-data">
+                <div class="col-md-6 mb-4">
+                  <div class="card shadow">
+                    <div class="card-body">
+                      <div class="form-group mb-3">
+                        <div class="form-group mb-3">
+                          <label for="example-fileinput">Default file input</label>
+                          <input type="file" id="example-fileinput" class="form-control-file" name="files">
+                        </div>
+                        <div class="form-group mb-3">
+                          <label for="customFile">Custom file input</label>
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div> <!-- /.card-body -->
+                  </div> <!-- /.card -->
+                </div> <!-- /.col -->
+                <button>submit</button>
+              </form>
               <div class="card shadow mb-4">
                 <div class="card-header">
                   <strong class="card-title">Form controls</strong>

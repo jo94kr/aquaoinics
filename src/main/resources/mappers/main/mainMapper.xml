@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aquaponics.aquaponics.main.mappers.MainMapper">
-        <select id="getContent" resultType="hashMap">
+        <select id="getContentList" resultType="hashMap">
                 SELECT 
                         NUM,
                         ID,
@@ -16,4 +16,70 @@
                         IMAGELOC
                 FROM CONTENT
         </select>
+
+        <select id="getContent" resultType="hashMap" parameterType="hashMap">
+                SELECT 
+                        NUM,
+                        ID,
+                        DATE_FORMAT(DATE, '%Y-%m-%d %T') AS DATE,
+                        FARMTYPE,
+                        PLANTTYPE,
+                        PLANTTOLIGHT,
+                        PLANTLENGTH,
+                        LEAFLENGTH,
+                        TEMPERATURE,
+                        HUMIDITY,
+                        IMAGELOC
+                FROM CONTENT
+                WHERE 
+                        ID = #{userId}
+                        AND NUM = #{contentId}
+        </select>
+        <select id="getFarmType" resultType="String">
+                SELECT 
+                        FARMNAME
+                FROM FARMTYPE
+        </select>
+        <select id="getPlantType" resultType="String">
+                SELECT 
+                        PLANTNAME
+                FROM PLANTTYPE
+        </select>
+
+        <insert id="insertContent" parameterType="hashMap">
+                INSERT INTO CONTENT
+                (
+                `id`,
+                `date`,
+                `farmType`,
+                `plantType`,
+                `plantToLight`,
+                `plantLength`,
+                `leafLength`,
+                `temperature`,
+                `humidity`,
+                `imageLoc`)
+                VALUES
+                (
+                #{userId},
+                #{date},
+                #{insertFarmType},
+                #{insertPlantType},
+                #{insertPlantToLight},
+                #{insertPlantLength},
+                #{insertLeafLength},
+                #{insertTemperature},
+                #{insertHumidity},
+                #{imageLoc}
+                );
+        </insert>
+
+        <delete id="deleteContent" parameterType="hashMap">
+                DELETE FROM CONTENT
+                WHERE
+                        ID = #{userId}
+                        AND NUM = #{contentId}
+        </delete>
+
+
 </mapper>

@@ -26,27 +26,26 @@
   </head>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script>
-    test();
-    function test() {
+    getContentList();
+
+    function getContentList() {
       $.ajax({
-        url: '/getContent',
+        url: '/getContentList',
         type: 'GET',
+        async: 'true',
         success: function (data) {
           var tr = '';
           $.each(data, function (i, item) {
             tr += '<tr>';
             tr += '<td>' + item.NUM + '</td>';
-            tr += '<td>' + item.ID + '</td>';
+            tr += '<td data-id="' + item.NUM + '">' + item.ID + '</td>';
             tr += '<td>' + item.DATE + '</td>';
-            tr += '<td>' + item.NUM + '</td>';
             tr += '</tr>';
           });
 
           $('#content').append(tr);
-
-          console.log(data);
         },
-        error: function (resultList) {
+        error: function (data) {
           alert('tset211');
         }
       });
@@ -54,315 +53,399 @@
   </script>
 
   <jsp:include page="side-bar.jsp"></jsp:include>
-
-  <body class="vertical  light  ">
+  <body class="horizontal light">
+    <a style="display: none;" class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light"></a>
     <div class="wrapper">
-      <jsp:include page="top-bar.jsp"></jsp:include>
       <main role="main" class="main-content">
         <div class="container-fluid">
           <div class="row justify-content-center">
             <div class="col-12">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventModal"><span class="fe fe-plus fe-16 mr-3"></span>New Event</button>
-              <h2 class="mb-2 page-title">Data table</h2>
-              <p class="card-text">DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible
-                tool, built upon the foundations of progressive enhancement, that adds all of these advanced features to
-                any HTML table. </p>
-              <div class="row my-4">
-                <!-- Small table -->
-                <div class="col-md-12">
-                  <div class="card shadow">
-                    <div class="card-body">
-                      <!-- table -->
-                      <table class="table datatables" id="content">
+              <div class="row align-items-center mb-2">
+                <div class="col">
+                  <h2 class="h5 page-title">관찰 일지</h2>
+                </div>
+                <div class="col-auto">
+                </div>
+              </div>
+              <div class="mb-2 align-items-center">
+                <div class="card mb-4">
+                  <div class="card-body">
+                    <div class="row mt-1 align-items-center" style="display: block;">
+                      <table class="table table-hover datatables" id="dataTable-1">
                         <thead>
                           <tr>
                             <th>#</th>
                             <th>Name</th>
                             <th>Date</th>
-                            <th>Content</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <!-- <tr>
-                            <td>
-                              <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input">
-                                <label class="custom-control-label"></label>
-                              </div>
-                            </td>
-                            <td>368</td>
-                            <td>Imani Lara</td>
-                            <td>(478) 446-9234</td>
-                            <td>Asset Management</td>
-                            <td>Borland</td>
-                            <td>9022 Suspendisse Rd.</td>
-                            <td>High Wycombe</td>
-                            <td>Jun 8, 2019</td>
-                            <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="text-muted sr-only">Action</span>
-                              </button>
-                              <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">Edit</a>
-                                <a class="dropdown-item" href="#">Remove</a>
-                                <a class="dropdown-item" href="#">Assign</a>
-                              </div>
-                            </td>
-                          </tr> -->
+                        <tbody id="content">
                         </tbody>
                       </table>
                     </div>
-                  </div>
-                </div> <!-- simple table -->
-              </div> <!-- end section -->
+                    <div class="map-box">
+                      <div id="areaChart"></div>
+                    </div>
+                  </div> <!-- .card-body -->
+                </div> <!-- .card -->
+              </div>
             </div> <!-- .col-12 -->
           </div> <!-- .row -->
         </div> <!-- .container-fluid -->
-        <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="defaultModalLabel">Notifications</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="list-group list-group-flush my-n3">
-                  <div class="list-group-item bg-transparent">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span class="fe fe-box fe-24"></span>
-                      </div>
-                      <div class="col">
-                        <small><strong>Package has uploaded successfull</strong></small>
-                        <div class="my-0 text-muted small">Package is zipped and uploaded</div>
-                        <small class="badge badge-pill badge-light text-muted">1m ago</small>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="list-group-item bg-transparent">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span class="fe fe-download fe-24"></span>
-                      </div>
-                      <div class="col">
-                        <small><strong>Widgets are updated successfull</strong></small>
-                        <div class="my-0 text-muted small">Just create new layout Index, form, table</div>
-                        <small class="badge badge-pill badge-light text-muted">2m ago</small>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="list-group-item bg-transparent">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span class="fe fe-inbox fe-24"></span>
-                      </div>
-                      <div class="col">
-                        <small><strong>Notifications have been sent</strong></small>
-                        <div class="my-0 text-muted small">Fusce dapibus, tellus ac cursus commodo</div>
-                        <small class="badge badge-pill badge-light text-muted">30m ago</small>
-                      </div>
-                    </div> <!-- / .row -->
-                  </div>
-                  <div class="list-group-item bg-transparent">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span class="fe fe-link fe-24"></span>
-                      </div>
-                      <div class="col">
-                        <small><strong>Link was attached to menu</strong></small>
-                        <div class="my-0 text-muted small">New layout has been attached to the menu</div>
-                        <small class="badge badge-pill badge-light text-muted">1h ago</small>
-                      </div>
-                    </div>
-                  </div> <!-- / .row -->
-                </div> <!-- / .list-group -->
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Clear All</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
-          aria-labelledby="defaultModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="defaultModalLabel">Shortcuts</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body px-5">
-                <div class="row align-items-center">
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-success justify-content-center">
-                      <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Control area</p>
-                  </div>
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-activity fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Activity</p>
-                  </div>
-                </div>
-                <div class="row align-items-center">
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-droplet fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Droplet</p>
-                  </div>
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-upload-cloud fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Upload</p>
-                  </div>
-                </div>
-                <div class="row align-items-center">
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-users fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Users</p>
-                  </div>
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-settings fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Settings</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </main> <!-- main -->
     </div> <!-- .wrapper -->
 
+    <!-- new event modal -->
     <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="varyModalLabel">New Event</h5>
+            <h5 class="modal-title" id="varyModalLabel">관찰 일지</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body p-4">
             <form>
-              <div class="form-group">
-                <label for="eventTitle" class="col-form-label">Title</label>
-                <input type="text" class="form-control" id="eventTitle" placeholder="Add event title">
-              </div>
-              <div class="form-group">
-                <label for="eventNote" class="col-form-label">Note</label>
-                <textarea class="form-control" id="eventNote" placeholder="Add some note for your event"></textarea>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="writer" id="num">작성자</label>
+                  <input type="text" class="form-control" id="writer" readonly>
+                </div>
               </div>
               <div class="form-row">
-                <div class="form-group col-md-8">
-                  <label for="eventType">Event type</label>
-                  <select id="eventType" class="form-control select2">
-                    <option value="work">Work</option>
-                    <option value="home">Home</option>
+                <div class="form-group col-md-6">
+                  <label for="observationDate">관찰 날짜</label>
+                  <input type="text" class="form-control" id="observationDate" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="farmType">스마트팜 종류</label>
+                  <input type="text" class="form-control" id="farmType" readonly>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="plantType">식물 종류</label>
+                  <input type="text" class="form-control" id="plantType" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="farmType">식물과 전등의 거리</label>
+                  <input type="text" class="form-control" id="plantToLight" readonly>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="plantType">식물의 길이</label>
+                  <input type="text" class="form-control" id="plantLength" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="plantType">잎의 길이</label>
+                  <input type="text" class="form-control" id="leafLength" readonly>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="farmType">온도</label>
+                  <input type="text" class="form-control" id="temperature" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="plantType">습도</label>
+                  <input type="text" class="form-control" id="humidity" readonly>
+                </div>
+              </div>
+              <div id="plantImage"></div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button type="button" class="btn mb-2 btn-primary" id="deleteContentBtn">일지 삭제</button>
+          </div>
+        </div>
+      </div>
+    </div> <!-- new event modal -->
+
+    <!-- insert modal -->
+    <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="varyModalLabel">관찰 일지 작성</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body p-4">
+            <form id="contentForm">
+              <div class="form-row"> 
+                <div class="form-group col-md-12">
+                  <label for="userId" class="col-form-label">이름</label>
+                  <input type="text" class="form-control" id="userId">
+                </div>
+              </div>
+              <div class="form-row"> 
+                <div class="form-group col-md-6">
+                  <label for="obsDate">관찰 날짜</label>
+                  <input class="form-control" id="obsDate" type="date" name="date">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="obsTime">관찰 시간</label>
+                  <input class="form-control" id="obsTime" type="time" name="time">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="insertFarmType">스마트팜 종류</label>
+                  <select id="insertFarmType" class="form-control select2">
+                    <option value="테스트1">테스트1</option>
+                    <option value="테스트2">테스트2</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="insertPlantType">식물 종류</label>
+                  <select id="insertPlantType" class="form-control select2">
+                    <option value="나무">나무</option>
+                    <option value="벼">벼</option>
                   </select>
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="date-input1">Start Date</label>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text" id="button-addon-date"><span class="fe fe-calendar fe-16"></span>
-                      </div>
-                    </div>
-                    <input type="text" class="form-control drgpicker" id="drgpicker-start" value="04/24/2020">
-                  </div>
+                  <label for="insertPlantToLight" class="col-form-label">식물과 전등의 거리</label>
+                  <input type="text" class="form-control" id="insertPlantToLight" placeholder="식물과 전등의 거리 (단위: cm)">
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="startDate">Start Time</label>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text" id="button-addon-time"><span class="fe fe-clock fe-16"></span></div>
-                    </div>
-                    <input type="text" class="form-control time-input" id="start-time" placeholder="10:00 AM">
-                  </div>
+                  <label for="insertPlantLength" class="col-form-label">식물의 길이</label>
+                  <input type="text" class="form-control" id="insertPlantLength" placeholder="식물의 길이 (단위: cm)">
                 </div>
               </div>
               <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="date-input1">End Date</label>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text" id="button-addon-date"><span class="fe fe-calendar fe-16"></span>
-                      </div>
-                    </div>
-                    <input type="text" class="form-control drgpicker" id="drgpicker-end" value="04/24/2020">
-                  </div>
+                <div class="form-group col-md-4">
+                  <label for="insertLeafLength" class="col-form-label">잎의 길이</label>
+                  <input type="text" class="form-control" id="insertLeafLength" placeholder="길이 (단위: cm)">
                 </div>
-                <div class="form-group col-md-6">
-                  <label for="startDate">End Time</label>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text" id="button-addon-time"><span class="fe fe-clock fe-16"></span></div>
-                    </div>
-                    <input type="text" class="form-control time-input" id="end-time" placeholder="11:00 AM">
-                  </div>
+                <div class="form-group col-md-4">
+                  <label for="insertTemperature" class="col-form-label">온도</label>
+                  <input type="text" class="form-control" id="insertTemperature" placeholder="온도 (단위: º)">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="insertHumidity" class="col-form-label">습도</label>
+                  <input type="text" class="form-control" id="insertHumidity" placeholder="습도 (단위: %)">
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="customFile">사진</label>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="files" accept="image/gif, image/jpeg, image/png">
+                  <label class="custom-file-label" for="customFile">이미지 파일만 가능 합니다. (jpg, png, 등등..)</label>
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer d-flex justify-content-between">
-            <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="RepeatSwitch" checked>
-              <label class="custom-control-label" for="RepeatSwitch">All day</label>
-            </div>
-            <button type="button" class="btn mb-2 btn-primary">Save Event</button>
+            <button type="button" class="btn mb-2 btn-primary" id="insertContentBtn">일지 저장</button>
           </div>
         </div>
       </div>
-    </div> <!-- new event modal -->
+    </div> <!-- insert modal -->
 
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/simplebar.min.js"></script>
-    <script src='js/daterangepicker.js'></script>
     <script src='js/jquery.stickOnScroll.js'></script>
     <script src="js/tinycolor-min.js"></script>
     <script src="js/config.js"></script>
     <script src='js/jquery.dataTables.min.js'></script>
     <script src='js/dataTables.bootstrap4.min.js'></script>
     <script>
-      $('#dataTable-1').DataTable(
-        {
-          autoWidth: true,
-          "lengthMenu": [
-            [16, 32, 64, -1],
-            [16, 32, 64, "All"]
-          ]
-        });
+      
     </script>
     <script src="js/apps.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
+      $(document).ready(function() {
+      $('#content tr').on('click', function() {
+          var tr = $(this);
+          var userId = tr.children().eq(1).text();
+          var contentId = tr.children().eq(1).data('id');
+          var sendData = {};
+          sendData["userId"] = userId;
+          sendData["contentId"] = contentId;
+          $.ajax({
+            url: '/getContent',
+            type: 'GET',
+            // async: false,
+            data: sendData,
+            success: function (data) {
+              $('#writer').val('');
+              $('#observationDate').val('');
+              $('#farmType').val('');
+              $('#plantToLight').val('');
+              $('#plantType').val('');
+              $('#plantLength').val('');
+              $('#leafLength').val('');
+              $('#temperature').val('');
+              $('#humidity').val('');
 
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'UA-56159088-1');
+              $('#writer').val(data.ID);
+              $('#writer').attr('contentId', data.NUM);
+              $('#observationDate').val(data.DATE);
+              $('#farmType').val(data.FARMTYPE);
+              $('#plantToLight').val(data.PLANTTOLIGHT + 'cm');
+              $('#plantType').val(data.PLANTTYPE);
+              $('#plantLength').val(data.PLANTLENGTH + 'cm');
+              $('#leafLength').val(data.LEAFLENGTH + 'cm');
+              $('#temperature').val(data.TEMPERATURE + 'ºC');
+              $('#humidity').val(data.HUMIDITY + '%');
+              $('#plantImage').html('<img src="' + data.IMAGELOC + '" style="max-width: 100%; height:auto;"/>');
+              $('#eventModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+              alert(error);
+            }
+          });
+        });
+      });
+
+      $(document).ready(function() {
+        $('#dataTable-1').DataTable(
+        {
+          autoWidth: true,
+          "lengthMenu": [
+            [10, 15, 20, -1],
+            [10, 15, 20, "All"]
+          ],
+          "order": [ 2, "desc" ]
+        });
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-56159088-1');
+        
+        $('#insertContent').click(function(){
+          $.ajax({
+            url: '/getSelectType',
+            type: 'GET',
+            // async: false,
+            success: function (data) {
+              var farmOption = '';
+              var plantOption = '';
+              $.each(data.farmType, function (i) {
+                farmOption +='<option value="' + data.farmType[i] + '">' + data.farmType[i] + '</option>';
+              });
+
+              $.each(data.plantType, function (i) {
+                plantOption +='<option value="' + data.plantType[i] + '">' + data.plantType[i] + '</option>';
+              });
+
+              $('#insertFarmType').html(farmOption);
+              $('#insertPlantType').html(plantOption);
+
+              $('#insertModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+              alert(error);
+            }
+          });
+
+        });
+
+        $('#insertContentBtn').click(function(){
+          var userId = $('#userId').val().trim();
+
+          if(userId && $('#obsDate').val() && $('#obsTime').val()){
+            var form = $('#contentForm')[0];
+            var sendData = new FormData();
+            var time = $('#obsDate').val() + ' ' + $('#obsTime').val();
+            sendData.append('userId', $('#userId').val());
+            sendData.append('date', time);
+            sendData.append('insertFarmType', $('#insertFarmType').val());
+            sendData.append('insertPlantType', $('#insertPlantType').val());
+            sendData.append('insertPlantToLight', $('#insertPlantToLight').val());
+            sendData.append('insertPlantLength', $('#insertPlantLength').val());
+            sendData.append('insertLeafLength', $('#insertLeafLength').val());
+            sendData.append('insertTemperature', $('#insertTemperature').val());
+            sendData.append('insertHumidity', $('#insertHumidity').val());
+            sendData.append('files', $('#files')[0].files[0]);
+  
+            $.ajax({
+              type : 'POST',
+              enctype: 'multipart/form-data',
+              processData: false,
+              contentType: false,
+              url : '/insertContent',
+              data : sendData,
+              cache: false,
+              success : function(data){
+                $('#userId').val('');
+                $('#obsDate').val('');
+                $('#obsTime').val('');
+                $('#insertFarmType').find('option:first').attr('selected', 'selected');
+                $('#insertPlantType').find('option:first').attr('selected', 'selected');
+                $('#insertPlantToLight').val('');
+                $('#insertPlantLength').val('');
+                $('#insertLeafLength').val('');
+                $('#insertTemperature').val('');
+                $('#insertHumidity').val('');
+                $('#insertModal').modal('hide');
+                refreshList();
+              },
+              error: function(xhr, status, error){
+                alert(xhr + " : " + status + ":" + error);
+              }
+            });
+          }
+          else if (!userId){
+            alert('이름을 입력하세요!');
+            $('#userId').focus();
+          }
+          else if (!time){
+            alert('날짜와 시간을 입력하세요!');
+            $('#obsDate').focus();
+          }
+
+        });
+
+        $('#deleteContentBtn').click(function() {
+          var contentId = $('#writer').attr('contentid');
+          var userId = $('#writer').val();
+          var sendData = {};
+
+          sendData["userId"] = userId;
+          sendData["contentId"] = contentId;
+
+          $.ajax({
+              type : 'POST',
+              url : '/deleteContent',
+              data : sendData,
+              success : function(data){
+                $('#eventModal').modal('hide');
+                refreshList();
+              },
+              error: function(xhr, status, error){
+                alert(xhr + " : " + status + ":" + error);
+              }
+            });
+        });
+
+        $('input[type=file]').on('change', function () {
+          if (window.FileReader) {
+            var filename = $(this)[0].files[0].name;
+          } else {
+            var filename = $(this).val().split('/').pop().split('\\').pop();
+          }
+          $(this).siblings('label').text(filename);
+        });
+
+        function refreshList(){
+          location.reload();
+        }
+
+      });
     </script>
   </body>
-
-  </html>
+</html>
