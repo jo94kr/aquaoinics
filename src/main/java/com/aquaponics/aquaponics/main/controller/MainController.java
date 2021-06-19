@@ -2,6 +2,7 @@ package com.aquaponics.aquaponics.main.controller;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -52,9 +53,9 @@ public class MainController {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("userId", userId);
 		paramMap.put("contentId", contentId);
-
+		
 		resultMap = mainService.getContent(paramMap);
-
+		
 		return resultMap;
 	}
 
@@ -69,6 +70,8 @@ public class MainController {
 		@RequestParam(value = "insertLeafLength", required = false) String insertLeafLength,
 		@RequestParam(value = "insertTemperature", required = false) String insertTemperature,
 		@RequestParam(value = "insertHumidity", required = false) String insertHumidity,
+		@RequestParam(value = "insertNote", required = false) String insertNote,
+		@RequestParam(value = "insertPlantName", required = false) String insertPlantName,
 		HttpServletRequest request) throws Exception {
 		Map<String, Object> paramMap = new HashMap<String,Object>();
 		String imageLoc = "";
@@ -82,7 +85,6 @@ public class MainController {
 			savedName = uploadFile(savedName, file.getBytes(), rootPath);
 			imageLoc = "contentImgs/" + savedName;
 		}
-
 		paramMap.put("userId", userId);
 		paramMap.put("date", date);
 		paramMap.put("insertFarmType", insertFarmType);
@@ -93,6 +95,8 @@ public class MainController {
 		paramMap.put("insertTemperature", insertTemperature);
 		paramMap.put("insertHumidity", insertHumidity);
 		paramMap.put("imageLoc", imageLoc);
+		paramMap.put("insertNote", insertNote);
+		paramMap.put("insertPlantName", insertPlantName);
 
 		mainService.insertContent(paramMap);
 
@@ -114,8 +118,8 @@ public class MainController {
 
 	@ResponseBody
 	@RequestMapping(value = "/getSelectType", method = RequestMethod.GET)
-	public Map<String, Object> getSelectType() throws Exception {
-		Map<String, Object> resultMap = new HashMap<>();
+	public List<String> getSelectType() throws Exception {
+		List<String> resultMap = new LinkedList<>();
 		resultMap = mainService.getSelectType();
 
 		return resultMap;

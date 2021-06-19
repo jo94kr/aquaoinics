@@ -1,6 +1,7 @@
 package com.aquaponics.aquaponics.main.service;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +34,9 @@ public class MainService {
         mainMapper.insertContent(paramMap);
     }
     
-    public Map<String, Object> getSelectType() throws Exception {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("farmType", mainMapper.getFarmType());
-        resultMap.put("plantType", mainMapper.getPlantType());
+    public List<String> getSelectType() throws Exception {
+        List<String> resultMap = new LinkedList<>();
+        resultMap = mainMapper.getFarmType();
 
         return resultMap;
     }

@@ -26,30 +26,8 @@
   </head>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script>
-    getContentList();
-
-    function getContentList() {
-      $.ajax({
-        url: '/getContentList',
-        type: 'GET',
-        async: 'true',
-        success: function (data) {
-          var tr = '';
-          $.each(data, function (i, item) {
-            tr += '<tr>';
-            tr += '<td>' + item.NUM + '</td>';
-            tr += '<td data-id="' + item.NUM + '">' + item.ID + '</td>';
-            tr += '<td>' + item.DATE + '</td>';
-            tr += '</tr>';
-          });
-
-          $('#content').append(tr);
-        },
-        error: function (data) {
-          alert('tset211');
-        }
-      });
-    }
+    
+    
   </script>
 
   <jsp:include page="side-bar.jsp"></jsp:include>
@@ -79,8 +57,6 @@
                             <th>Date</th>
                           </tr>
                         </thead>
-                        <tbody id="content">
-                        </tbody>
                       </table>
                     </div>
                     <div class="map-box">
@@ -109,9 +85,13 @@
           <div class="modal-body p-4">
             <form>
               <div class="form-row">
-                <div class="form-group col-md-12">
-                  <label for="writer" id="num">작성자</label>
+                <div class="form-group col-md-6">
+                  <label for="writer" id="num">모둠 이름</label>
                   <input type="text" class="form-control" id="writer" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="plantName">식물 이름</label>
+                  <input type="text" class="form-control" id="plantName" readonly>
                 </div>
               </div>
               <div class="form-row">
@@ -154,11 +134,25 @@
                   <input type="text" class="form-control" id="humidity" readonly>
                 </div>
               </div>
+              <hr>
+              <div class="form-group col-md-12" id="imgInsert" style="display: none;">
+                <label for="customFile">사진</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="files" accept="image/gif, image/jpeg, image/png">
+                    <label class="custom-file-label" for="customFile">이미지 파일만 가능 합니다. (jpg, png, 등등..)</label>
+                  </div>
+              </div>
               <div id="plantImage"></div>
+              <hr>
+              <div class="form-group col-md-12">
+                <label for="contentNote">메모</label>
+                <textarea class="form-control" id="contentNote" rows="4" style="margin-top: 0px; margin-bottom: 0px; height: 62px; resize: none;" readonly></textarea>
+              </div>
             </form>
           </div>
           <div class="modal-footer d-flex justify-content-between">
-            <button type="button" class="btn mb-2 btn-primary" id="deleteContentBtn">일지 삭제</button>
+            <button type="button" class="btn mb-2 btn-secondary" id="deleteContentBtn">일지 삭제</button>
+            <button type="button" class="btn mb-2 btn-primary" id="updateContentBtn">일지 수정</button>
           </div>
         </div>
       </div>
@@ -177,9 +171,13 @@
           <div class="modal-body p-4">
             <form id="contentForm">
               <div class="form-row"> 
-                <div class="form-group col-md-12">
-                  <label for="userId" class="col-form-label">이름</label>
+                <div class="form-group col-md-6">
+                  <label for="userId" class="col-form-label">모둠 이름</label>
                   <input type="text" class="form-control" id="userId">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="userId" class="col-form-label">식물 이름</label>
+                  <input type="text" class="form-control" id="insertPlantName">
                 </div>
               </div>
               <div class="form-row"> 
@@ -196,16 +194,11 @@
                 <div class="form-group col-md-6">
                   <label for="insertFarmType">스마트팜 종류</label>
                   <select id="insertFarmType" class="form-control select2">
-                    <option value="테스트1">테스트1</option>
-                    <option value="테스트2">테스트2</option>
                   </select>
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="insertPlantType">식물 종류</label>
-                  <select id="insertPlantType" class="form-control select2">
-                    <option value="나무">나무</option>
-                    <option value="벼">벼</option>
-                  </select>
+                  <label for="palntType">식물 종류</label>
+                  <input class="form-control" id="palntType" type="text">
                 </div>
               </div>
               <div class="form-row">
@@ -232,12 +225,18 @@
                   <input type="text" class="form-control" id="insertHumidity" placeholder="습도 (단위: %)">
                 </div>
               </div>
+              <hr>
               <div class="form-group mb-3">
                 <label for="customFile">사진</label>
                 <div class="custom-file">
                   <input type="file" class="custom-file-input" id="files" accept="image/gif, image/jpeg, image/png">
                   <label class="custom-file-label" for="customFile">이미지 파일만 가능 합니다. (jpg, png, 등등..)</label>
                 </div>
+              </div>
+              <hr>
+              <div class="form-group mb-12">
+                <label for="insertNote">메모</label>
+                <textarea class="form-control" id="insertNote" rows="4" style="margin-top: 0px; margin-bottom: 0px; height: 62px; resize: none;" maxlength="200"></textarea>
               </div>
             </form>
           </div>
@@ -247,6 +246,95 @@
         </div>
       </div>
     </div> <!-- insert modal -->
+
+    <!-- update modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="varyModalLabel">관찰 일지 수정</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body p-4">
+            <form id="contentForm">
+              <div class="form-row"> 
+                <div class="form-group col-md-6">
+                  <label for="updateUserId" class="col-form-label">모둠 이름</label>
+                  <input type="text" class="form-control" id="updateUserId">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="userId" class="col-form-label">식물 이름</label>
+                  <input type="text" class="form-control" id="updatePlantName">
+                </div>
+              </div>
+              <div class="form-row"> 
+                <div class="form-group col-md-6">
+                  <label for="obsDate">관찰 날짜</label>
+                  <input class="form-control" id="updateObsDate" type="text">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="obsTime">관찰 시간</label>
+                  <input class="form-control" id="updateObsTime" type="text">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="updateFarmType">스마트팜 종류</label>
+                  <input type="text" class="form-control" id="updateFarmType">
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="palntType">식물 종류</label>
+                  <input class="form-control" id="palntType" type="text">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="updatePlantToLight" class="col-form-label">식물과 전등의 거리</label>
+                  <input type="text" class="form-control" id="updatePlantToLight" placeholder="식물과 전등의 거리 (단위: cm)">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="updatePlantLength" class="col-form-label">식물의 길이</label>
+                  <input type="text" class="form-control" id="updatePlantLength" placeholder="식물의 길이 (단위: cm)">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="updateLeafLength" class="col-form-label">잎의 길이</label>
+                  <input type="text" class="form-control" id="updateLeafLength" placeholder="길이 (단위: cm)">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="updateTemperature" class="col-form-label">온도</label>
+                  <input type="text" class="form-control" id="updateTemperature" placeholder="온도 (단위: º)">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="updateHumidity" class="col-form-label">습도</label>
+                  <input type="text" class="form-control" id="updateHumidity" placeholder="습도 (단위: %)">
+                </div>
+              </div>
+              <hr>
+              <div class="form-group mb-3">
+                <label for="customFile">사진</label>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="files" accept="image/gif, image/jpeg, image/png">
+                  <label class="custom-file-label" for="customFile">이미지 파일만 가능 합니다. (jpg, png, 등등..)</label>
+                </div>
+              </div>
+              <hr>
+              <div class="form-group mb-12">
+                <label for="updateNote">메모</label>
+                <textarea class="form-control" id="updateNote" rows="4" style="margin-top: 0px; margin-bottom: 0px; height: 62px; resize: none;" maxlength="200"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button type="button" class="btn mb-2 btn-primary" id="updateContentBtn">일지 저장</button>
+          </div>
+        </div>
+      </div>
+    </div> <!-- update modal -->
 
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -265,18 +353,49 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
     <script>
-      $(document).ready(function() {
-      $('#content tr').on('click', function() {
-          var tr = $(this);
+      getContentList();
+      function getContentList() {
+        $.ajax({
+          url: '/getContentList',
+          type: 'GET',
+          async: false,
+          success: function (data) {
+            $('#dataTable-1').DataTable({
+              autoWidth: true,
+              "lengthMenu": [
+                [10, 15, 20, -1],
+                [10, 15, 20, "All"]
+              ],
+              "order": [ 2, "desc" ],
+              data: data,
+              columns:[
+              {data: 'NUM'},
+              {data: 'ID'},
+              {data: 'DATE'}
+              ],
+              createdRow: function(row, data, dataIndex){
+                $(row).find('td:eq(0)').attr('data-id', data.Id);
+              }
+            });
+          },
+          error: function (data, status) {
+            alert('status : ' + status + '\n' + 'error : ' + data.responseJSON.error + '\n' + 'message : ' + data.responseJSON.message 
+                    + '\n ----------------------------- \n' + data.responseJSON.trace);
+          }
+        });
+      }
+
+      $('#dataTable-1 tbody').on('click', 'tr', function() {
+        var tr = $(this);
           var userId = tr.children().eq(1).text();
-          var contentId = tr.children().eq(1).data('id');
+          var contentId = tr.children().eq(0).text();
           var sendData = {};
           sendData["userId"] = userId;
           sendData["contentId"] = contentId;
           $.ajax({
             url: '/getContent',
             type: 'GET',
-            // async: false,
+            async: true,
             data: sendData,
             success: function (data) {
               $('#writer').val('');
@@ -288,7 +407,9 @@
               $('#leafLength').val('');
               $('#temperature').val('');
               $('#humidity').val('');
-
+              $('#contentNote').val('');
+              $('#plantName').val('');
+              
               $('#writer').val(data.ID);
               $('#writer').attr('contentId', data.NUM);
               $('#observationDate').val(data.DATE);
@@ -300,31 +421,26 @@
               $('#temperature').val(data.TEMPERATURE + 'ºC');
               $('#humidity').val(data.HUMIDITY + '%');
               $('#plantImage').html('<img src="' + data.IMAGELOC + '" style="max-width: 100%; height:auto;"/>');
+              $('#contentNote').val(data.NOTE);
+              $('#plantName').val(data.PLANTNAME);
               $('#eventModal').modal('show');
             },
-            error: function (xhr, status, error) {
-              alert(error);
+            error: function (data, status) {
+              alert('status : ' + status + '\n' + 'error : ' + data.responseJSON.error + '\n' + 'message : ' + data.responseJSON.message 
+                      + '\n ----------------------------- \n' + data.responseJSON.trace);
             }
           });
         });
-      });
-
-      $(document).ready(function() {
-        $('#dataTable-1').DataTable(
-        {
-          autoWidth: true,
-          "lengthMenu": [
-            [10, 15, 20, -1],
-            [10, 15, 20, "All"]
-          ],
-          "order": [ 2, "desc" ]
-        });
+      
+      $(document).ready(function(){
         window.dataLayer = window.dataLayer || [];
         function gtag() {
-          dataLayer.push(arguments);
+          dataLayer.push();
         }
         gtag('js', new Date());
         gtag('config', 'UA-56159088-1');
+
+        //---------------
         
         $('#insertContent').click(function(){
           $.ajax({
@@ -334,21 +450,17 @@
             success: function (data) {
               var farmOption = '';
               var plantOption = '';
-              $.each(data.farmType, function (i) {
-                farmOption +='<option value="' + data.farmType[i] + '">' + data.farmType[i] + '</option>';
-              });
-
-              $.each(data.plantType, function (i) {
-                plantOption +='<option value="' + data.plantType[i] + '">' + data.plantType[i] + '</option>';
+              $.each(data, function (i) {
+                farmOption +='<option value="' + data[i] + '">' + data[i] + '</option>';
               });
 
               $('#insertFarmType').html(farmOption);
-              $('#insertPlantType').html(plantOption);
 
               $('#insertModal').modal('show');
             },
-            error: function (xhr, status, error) {
-              alert(error);
+            error: function (data, status) {
+              alert('status : ' + status + '\n' + 'error : ' + data.responseJSON.error + '\n' + 'message : ' + data.responseJSON.message 
+                      + '\n ----------------------------- \n' + data.responseJSON.trace);
             }
           });
 
@@ -364,12 +476,14 @@
             sendData.append('userId', $('#userId').val());
             sendData.append('date', time);
             sendData.append('insertFarmType', $('#insertFarmType').val());
-            sendData.append('insertPlantType', $('#insertPlantType').val());
+            sendData.append('insertPlantType', $('#palntType').val());
             sendData.append('insertPlantToLight', $('#insertPlantToLight').val());
             sendData.append('insertPlantLength', $('#insertPlantLength').val());
             sendData.append('insertLeafLength', $('#insertLeafLength').val());
             sendData.append('insertTemperature', $('#insertTemperature').val());
             sendData.append('insertHumidity', $('#insertHumidity').val());
+            sendData.append('insertNote', $('#insertNote').val());
+            sendData.append('insertPlantName', $('#insertPlantName').val());
             sendData.append('files', $('#files')[0].files[0]);
   
             $.ajax({
@@ -385,17 +499,20 @@
                 $('#obsDate').val('');
                 $('#obsTime').val('');
                 $('#insertFarmType').find('option:first').attr('selected', 'selected');
-                $('#insertPlantType').find('option:first').attr('selected', 'selected');
+                $('#palntType').val('');
                 $('#insertPlantToLight').val('');
                 $('#insertPlantLength').val('');
                 $('#insertLeafLength').val('');
                 $('#insertTemperature').val('');
                 $('#insertHumidity').val('');
+                $('#insertNote').val('');
+                $('#insertPlantName').val('');
                 $('#insertModal').modal('hide');
                 refreshList();
               },
-              error: function(xhr, status, error){
-                alert(xhr + " : " + status + ":" + error);
+              error: function (data, status) {
+                alert('status : ' + status + '\n' + 'error : ' + data.responseJSON.error + '\n' + 'message : ' + data.responseJSON.message 
+                        + '\n ----------------------------- \n' + data.responseJSON.trace);
               }
             });
           }
@@ -410,15 +527,43 @@
 
         });
 
+        $('#updateContentBtn').click(function(){
+          var pass = prompt("비밀번호를 입력하세요.");
+          if(pass == "Mj1234"){
+            var contentId = $('#writer').attr('contentid');
+            var userId = $('#writer').val();
+            var sendData = {};
+
+            sendData["userId"] = userId;
+            sendData["contentId"] = contentId;
+
+            $('#updateModal').modal('show');
+            
+            // $('#updateUserId').val($('#writer').val());
+            // $('#updateObsDate').val($('#observationDate').val());
+            // $('#updateFarmType').val($('#farmType').val());
+            // $('#updatePlantToLight').val($('#plantToLight').val());
+            // $('#updatePlantType').val($('#plantType').val());
+            // $('#updatePlantLength').val($('#plantLength').val());
+            // $('#updateLeafLength').val($('#leafLength').val());
+            // $('#updateTemperature').val($('#temperature').val());
+            // $('#updateHumidity').val($('#humidity').val());
+            // $('#updateContentNote').val($('#contentNote').val());
+            // $('#updatePlantName').val($('#plantName').val());
+          }
+        });
+        
         $('#deleteContentBtn').click(function() {
-          var contentId = $('#writer').attr('contentid');
-          var userId = $('#writer').val();
-          var sendData = {};
-
-          sendData["userId"] = userId;
-          sendData["contentId"] = contentId;
-
-          $.ajax({
+          var pass = prompt("비밀번호를 입력하세요.");
+          if(pass == "Mj1234"){
+            var contentId = $('#writer').attr('contentid');
+            var userId = $('#writer').val();
+            var sendData = {};
+  
+            sendData["userId"] = userId;
+            sendData["contentId"] = contentId;
+  
+            $.ajax({
               type : 'POST',
               url : '/deleteContent',
               data : sendData,
@@ -426,10 +571,12 @@
                 $('#eventModal').modal('hide');
                 refreshList();
               },
-              error: function(xhr, status, error){
-                alert(xhr + " : " + status + ":" + error);
-              }
+              error: function (data, status) {
+              alert('status : ' + status + '\n' + 'error : ' + data.responseJSON.error + '\n' + 'message : ' + data.responseJSON.message 
+                      + '\n ----------------------------- \n' + data.responseJSON.trace);
+            }
             });
+          }
         });
 
         $('input[type=file]').on('change', function () {

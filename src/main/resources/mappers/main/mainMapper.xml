@@ -5,15 +5,17 @@
                 SELECT 
                         NUM,
                         ID,
-                        DATE_FORMAT(DATE, '%Y-%m-%d %T') AS DATE,
-                        FARMTYPE,
+                        DATE_FORMAT(DATE, '%Y-%m-%d %T') AS DATE
+                        <!-- FARMTYPE,
                         PLANTTYPE,
                         PLANTTOLIGHT,
                         PLANTLENGTH,
                         LEAFLENGTH,
                         TEMPERATURE,
                         HUMIDITY,
-                        IMAGELOC
+                        IMAGELOC,
+                        NOTE,
+                        PLANTNAME -->
                 FROM CONTENT
         </select>
 
@@ -29,21 +31,19 @@
                         LEAFLENGTH,
                         TEMPERATURE,
                         HUMIDITY,
-                        IMAGELOC
+                        IMAGELOC,
+                        NOTE,
+                        PLANTNAME
                 FROM CONTENT
                 WHERE 
                         ID = #{userId}
                         AND NUM = #{contentId}
         </select>
+
         <select id="getFarmType" resultType="String">
                 SELECT 
                         FARMNAME
                 FROM FARMTYPE
-        </select>
-        <select id="getPlantType" resultType="String">
-                SELECT 
-                        PLANTNAME
-                FROM PLANTTYPE
         </select>
 
         <insert id="insertContent" parameterType="hashMap">
@@ -58,7 +58,10 @@
                 `leafLength`,
                 `temperature`,
                 `humidity`,
-                `imageLoc`)
+                `imageLoc`,
+                `note`,
+                `plantname`
+                )
                 VALUES
                 (
                 #{userId},
@@ -70,7 +73,9 @@
                 #{insertLeafLength},
                 #{insertTemperature},
                 #{insertHumidity},
-                #{imageLoc}
+                #{imageLoc},
+                #{insertNote},
+                #{insertPlantName}
                 );
         </insert>
 
