@@ -13,5 +13,6 @@ public interface MainMapper {
     public Map<String, Object> getContent(Map<String, Object> paramMap) throws Exception;
     public void insertContent(Map<String, Object> paramMap) throws Exception;
     public List<String> getFarmType() throws Exception;
+    public void updateContent();
     public void deleteContent(Map<String, Object> paramMap) throws Exception;
 }

@@ -60,8 +60,9 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/insertContent", method = RequestMethod.POST)
-	public String insertContent(@RequestPart(value = "files", required = false) MultipartFile file,
-	@RequestParam(value = "userId", required = false) String userId,
+	public String insertContent(
+		@RequestPart(value = "files", required = false) MultipartFile file,
+		@RequestParam(value = "userId", required = false) String userId,
 		@RequestParam(value = "date", required = false) String date,
 		@RequestParam(value = "insertFarmType", required = false) String insertFarmType,
 		@RequestParam(value = "insertPlantType", required = false) String insertPlantType,
@@ -72,7 +73,8 @@ public class MainController {
 		@RequestParam(value = "insertHumidity", required = false) String insertHumidity,
 		@RequestParam(value = "insertNote", required = false) String insertNote,
 		@RequestParam(value = "insertPlantName", required = false) String insertPlantName,
-		HttpServletRequest request) throws Exception {
+		HttpServletRequest request
+	) throws Exception {
 		Map<String, Object> paramMap = new HashMap<String,Object>();
 		String imageLoc = "";
 		// String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
@@ -110,7 +112,7 @@ public class MainController {
         // 랜덤생성+파일이름 저장
         String savedName = uuid.toString()+"_"+originalName;
         File target = new File(rootPath, savedName);
-        // 임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사
+        // 임시디렉토리에 저장된 파일을 지정된 디렉토리로 복사
         // FileCopyUtils.copy(바이트배열, 파일객체)
         FileCopyUtils.copy(fileData, target);
         return savedName;
@@ -123,6 +125,52 @@ public class MainController {
 		resultMap = mainService.getSelectType();
 
 		return resultMap;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/updateContent", method = RequestMethod.GET)
+	public String updateContent(
+		@RequestPart(value = "updateFiles", required = false) MultipartFile file,
+		@RequestParam(value = "userId", required = false) String userId,
+		@RequestParam(value = "date", required = false) String date,
+		@RequestParam(value = "insertFarmType", required = false) String insertFarmType,
+		@RequestParam(value = "insertPlantType", required = false) String insertPlantType,
+		@RequestParam(value = "insertPlantToLight", required = false) String insertPlantToLight,
+		@RequestParam(value = "insertPlantLength", required = false) String insertPlantLength,
+		@RequestParam(value = "insertLeafLength", required = false) String insertLeafLength,
+		@RequestParam(value = "insertTemperature", required = false) String insertTemperature,
+		@RequestParam(value = "insertHumidity", required = false) String insertHumidity,
+		@RequestParam(value = "insertNote", required = false) String insertNote,
+		@RequestParam(value = "insertPlantName", required = false) String insertPlantName,
+		HttpServletRequest request
+	) throws Exception {
+		Map<String, Object> paramMap = new HashMap<String,Object>();
+
+		String imageLoc = "";
+		if (file != null){
+			String savedName = file.getOriginalFilename();
+			String rootPath = request.getSession().getServletContext().getRealPath("contentImgs/");
+
+			savedName = uploadFile(savedName, file.getBytes(), rootPath);
+			imageLoc = "contentImgs/" + savedName;
+		}
+		// paramMap.put("userId", userId);
+		// paramMap.put("date", date);
+		// paramMap.put("insertFarmType", insertFarmType);
+		// paramMap.put("insertPlantType", insertPlantType);
+		// paramMap.put("insertPlantToLight", insertPlantToLight);
+		// paramMap.put("insertPlantLength", insertPlantLength);
+		// paramMap.put("insertLeafLength", insertLeafLength);
+		// paramMap.put("insertTemperature", insertTemperature);
+		// paramMap.put("insertHumidity", insertHumidity);
+		// paramMap.put("imageLoc", imageLoc);
+		// paramMap.put("insertNote", insertNote);
+		// paramMap.put("insertPlantName", insertPlantName);
+		paramMap.put("oriImgLoc", value);
+		
+		mainService.updateContent(paramMap);
+		
+		return "index";
 	}
 
 	@RequestMapping(value = "/deleteContent", method = RequestMethod.POST)

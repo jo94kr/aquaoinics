@@ -271,12 +271,12 @@
               </div>
               <div class="form-row"> 
                 <div class="form-group col-md-6">
-                  <label for="obsDate">관찰 날짜</label>
-                  <input class="form-control" id="updateObsDate" type="text">
+                  <label for="updateObsDate">관찰 날짜</label>
+                  <input class="form-control" id="updateObsDate" type="date" name="date">
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="obsTime">관찰 시간</label>
-                  <input class="form-control" id="updateObsTime" type="text">
+                  <label for="updateObsTime">관찰 시간</label>
+                  <input class="form-control" id="updateObsTime" type="time" name="time">
                 </div>
               </div>
               <div class="form-row">
@@ -286,8 +286,8 @@
                   </select>
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="palntType">식물 종류</label>
-                  <input class="form-control" id="palntType" type="text">
+                  <label for="updatePlantType">식물 종류</label>
+                  <input class="form-control" id="updatePlantType" type="text">
                 </div>
               </div>
               <div class="form-row">
@@ -317,8 +317,11 @@
               <hr>
               <div class="form-group mb-3">
                 <label for="customFile">사진</label>
+                <div id="updateImg">
+                </div>
+                <hr>
                 <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="files" accept="image/gif, image/jpeg, image/png">
+                  <input type="file" class="custom-file-input" id="updateFiles" accept="image/gif, image/jpeg, image/png">
                   <label class="custom-file-label" for="customFile">이미지 파일만 가능 합니다. (jpg, png, 등등..)</label>
                 </div>
               </div>
@@ -539,17 +542,35 @@
 
             $('#updateModal').modal('show');
             
-            // $('#updateUserId').val($('#writer').val());
-            // $('#updateObsDate').val($('#observationDate').val());
-            // $('#updateFarmType').val($('#farmType').val());
-            // $('#updatePlantToLight').val($('#plantToLight').val());
-            // $('#updatePlantType').val($('#plantType').val());
-            // $('#updatePlantLength').val($('#plantLength').val());
-            // $('#updateLeafLength').val($('#leafLength').val());
-            // $('#updateTemperature').val($('#temperature').val());
-            // $('#updateHumidity').val($('#humidity').val());
-            // $('#updateContentNote').val($('#contentNote').val());
-            // $('#updatePlantName').val($('#plantName').val());
+            var date = $('#observationDate').val().split(" ");
+
+            $('#updateUserId').val($('#writer').val());
+            $('#updateObsDate').val(date[0]);
+            $('#updateObsTime').val(date[1]);
+            $('#updateFarmType').val($('#farmType').val());
+            $('#updatePlantToLight').val($('#plantToLight').val());
+            $('#updatePlantType').val($('#plantType').val());
+            $('#updatePlantLength').val($('#plantLength').val());
+            $('#updateLeafLength').val($('#leafLength').val());
+            $('#updateTemperature').val($('#temperature').val());
+            $('#updateHumidity').val($('#humidity').val());
+            $('#updateContentNote').val($('#contentNote').val());
+            $('#updatePlantName').val($('#plantName').val());
+            $('#updateImg').html('<img src="' + $('#plantImage img').attr('src') + '" style="max-width: 100%; height:auto;"/>');
+            $('#updateNote').val($('#contentNote').val());
+
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            // sendData['updateUserId'] = $('#updateUserId').val();
+            sendData['updateOriImgLoc'] = $('#updateImg img').attr('src');
+
           }
         });
         

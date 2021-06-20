@@ -41,6 +41,13 @@ public class MainService {
         return resultMap;
     }
 
+    public List<String> updateContent(Map<String, Object> paramMap) throws Exception {
+        List<String> resultMap = new LinkedList<>();
+        // mainMapper.updateContent();
+
+        return resultMap;
+    }    
+
     public void deleteContent(Map<String, Object> paramMap) throws Exception {
         mainMapper.deleteContent(paramMap);
     }
